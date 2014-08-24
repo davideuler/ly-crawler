@@ -13,7 +13,7 @@ from scrapy import signals
 
 class LvyouSpider(BaseSpider):
     name = "lvyou"
-    handle_httpstatus_list = [403,404,500,502,503,504] 
+    handle_httpstatus_list = [403,404,500,502,503,504]
     allowed_domains = ["ly.com","17u.com","17u.net"]
     start_urls = (
         'http://www.ly.com/',
@@ -22,16 +22,16 @@ class LvyouSpider(BaseSpider):
     download_delay = 1
 
     rules = (
-        # Extract all links and follow links from them 
+        # Extract all links and follow links from them
         # (since no callback means follow=True by default)
         # (If "allow" is not given, it will match all links.)
         Rule(SgmlLinkExtractor(allow=()), follow=True),
-    
+
         # Extract links matching the "ad/any-words/67-anynumber.html" pattern
         # and parse them with the spider's method parse_item (NOT FOLLOW THEM)
         #Rule(SgmlLinkExtractor(allow=r'ad/.+/67-\d+\.html'), callback='parse_item'),
     )
-    
+
     def __init__(self, category=None):
         self.failed_urls = []
 
@@ -65,4 +65,4 @@ class LvyouSpider(BaseSpider):
         self.crawler.stats.inc_value('downloader/exception_type_count/%s' % ex_class, spider=spider)
 
     dispatcher.connect(handle_spider_closed, signals.spider_closed)
-    
+
